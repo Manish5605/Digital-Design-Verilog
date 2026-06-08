@@ -1,0 +1,52 @@
+`timescale 1ns / 1ps
+
+module Mux_tb;
+
+reg  [7:0] I0, I1, I2, I3;
+reg  [1:0] Sel;
+wire [7:0] y;
+
+// DUT Instantiation
+Mux_4x1 #(.WIDTH(8)) DUT (
+    .I0(I0),
+    .I1(I1),
+    .I2(I2),
+    .I3(I3),
+    .Sel(Sel),
+    .y(y)
+);
+
+initial begin
+
+    // Initialize inputs
+    I0 = 8'hAA;   // 10101010
+    I1 = 8'hF0;   // 11110000
+    I2 = 8'h55;   // 01010101
+    I3 = 8'h0F;   // 00001111
+
+    // Select I0
+    Sel = 2'b00;
+    #10;
+
+    // Select I1
+    Sel = 2'b01;
+    #10;
+
+    // Select I2
+    Sel = 2'b10;
+    #10;
+
+    // Select I3
+    Sel = 2'b11;
+    #10;
+
+    $finish;
+
+end
+
+initial begin
+    $monitor("Time=%0t Sel=%b y=%h",
+              $time, Sel, y);
+end
+
+endmodule
