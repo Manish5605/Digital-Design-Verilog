@@ -1,0 +1,35 @@
+module Mux_4x1 #(parameter WIDTH=4)(
+    input  [WIDTH-1:0] I0,
+    input  [WIDTH-1:0] I1,
+    input  [WIDTH-1:0] I2,
+    input  [WIDTH-1:0] I3,
+    input  [1:0] Sel,
+    output [WIDTH-1:0] y
+);
+
+wire [WIDTH-1:0] w0, w1;
+
+// First stage
+Mux_Parameterized #(.WIDTH(WIDTH)) M1 (
+    .a(I0),
+    .b(I1),
+    .sel(Sel[0]),
+    .y(w0)
+);
+
+Mux_Parameterized #(.WIDTH(WIDTH)) M2 (
+    .a(I2),
+    .b(I3),
+    .sel(Sel[0]),
+    .y(w1)
+);
+
+// Second stage
+Mux_Parameterized #(.WIDTH(WIDTH)) M3 (
+    .a(w0),
+    .b(w1),
+    .sel(Sel[1]),
+    .y(y)
+);
+
+endmodule
